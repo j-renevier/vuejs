@@ -1,11 +1,13 @@
 <template>
   <h1>Mon titre</h1>
+
   <p v-bind:class="`p-${maVar}`">Voici la valeur de maVar : {{ maVar }}</p>
   <p v-bind:class="`p-${count}`">Voici la valeur de count : {{ count }}</p>
   <div>
     <button v-on:click="increment">Increment</button>
     <button @click="decrement">Decrement</button>
   </div>
+
   <!-- Si count.value est négatif alors on affiche le message Invalid sinon le message valide Si count.value est positif alors on affiche le message Valid  -->
   <p v-show="count < 0">Invalide</p>
   <p v-show="count >= 0">Valide</p>
@@ -18,12 +20,11 @@
   <p :class="{isNull: count === 0 }">Null</p>
 
   <br>
-  <form @submit="addElement">
+  <form @submit.prevent="addElementRef">
     <input type="text" placeholder="Nom" v-model="element.name"/>
     <input type="text" placeholder="Description" v-model="element.description"/>
     <button type="submit">Ajouter</button>
   </form>
-
   <br>
   <ul>
     <li v-for="(element, index) in elements" :key="index">
@@ -34,12 +35,18 @@
   </ul>
 
   <br>
-
   <button @click=sortElement()>Trier</button>
+  <br>
+
+  <TodoList />
 </template>
 
 <script setup>
   import { ref }  from 'vue'
+
+  import TodoList from './components/TodoList.vue';
+
+
   const maVar = 5;
 
   const count = ref(0);
@@ -54,10 +61,6 @@
 
   const inject = `<span>${count.value}</span>`;
 
-  const element = ref({
-    name: "",
-    description: ""
-  })
 
   const elements = ref([
     {
@@ -74,8 +77,12 @@
     }
   ])
 
-  const addElement = (event) => {
-    event.preventDefault()
+  const element = ref({
+    name: "",
+    description: ""
+  })
+
+  const addElementRef = (event) => {
     elements.value.push({...element.value})
     element.value.name = ''
     element.value.description = ''
