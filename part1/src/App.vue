@@ -39,17 +39,52 @@
   <br>
 
   <TodoList />
+
+  <br>
+
+  <ChildComponent title="Child Component" :value="count" class="childComponent" @click="increment" @valid="toggleValid" @unvalid="toggleValid"/>
+  <br>
+  {{ valid }}
+
+  <br>
+  
+  <ChildComponent2 v-model:first-name="user.firstName" v-model:last-name="user.lastName"/>
+  <button @click="reset()">Reset</button>
+
+  <br>
+
+  <ChildComponent3>
+    <template v-slot:header>
+      En tête
+    </template>
+    <template v-slot:aside>
+      Sidebar
+    </template>
+    <template v-slot:main>
+      Main
+    </template>
+    <template v-slot:footer>
+      Footer
+    </template>
+  </ChildComponent3>
+
 </template>
 
 <script setup>
   import { ref }  from 'vue'
 
   import TodoList from './components/TodoList.vue';
+  import ChildComponent from './components/ChildComponent.vue';
+  import ChildComponent2 from './components/ChildComponent2.vue';
+  import ChildComponent3 from './components/ChildComponent3.vue';
 
 
   const maVar = 5;
 
   const count = ref(0);
+  const description = ref('test');
+
+  const valid = ref(0)
   
   const increment = (event) => {
     count.value ++ 
@@ -57,6 +92,11 @@
   
   const decrement = () => {
     count.value --
+  }
+
+  const toggleValid = (event) => {
+    console.log(event)
+    valid.value = !valid.value
   }
 
   const inject = `<span>${count.value}</span>`;
@@ -95,6 +135,16 @@
   const deleteElement = (element2Remove) => {
     elements.value = elements.value.filter(element => element2Remove.name !== element.name)
   }
+
+  const user = ref({
+    firstName: "test",
+    lastName: "test"
+  })
+  
+  const reset = () => {
+    user.value.firstName = ""
+    user.value.lastName  = ""
+  }
 </script>
 
 <style>
@@ -107,6 +157,10 @@ h1 {
 
 .isNull{
   background: brown;
+}
+
+.childComponent{
+  background : rgb(0, 0, 104);
 }
 </style>
 
