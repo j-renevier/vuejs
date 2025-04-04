@@ -1,9 +1,6 @@
 <template>
   <h1>Todo list</h1>
 
-  <br/>
-  <br/>
-  <br/>
   <div>
     <form @submit.prevent="addTodo">
       <input type="text" placeholder="Nouvelle tâches" v-model="newTodo">
@@ -32,10 +29,17 @@
       Il vous reste {{ remainingTodos }} to do !
     </p>
   </div>
+
+  <br/>
+
+  <ChildComponent4 v-if="showTimer"/>
+  <br/>
+  <button @click="showTimer = !showTimer"> Show Timer</button>
 </template>
 
 <script setup>
   import { computed, ref }  from 'vue'
+  import ChildComponent4 from './ChildComponent4.vue';
 
   const todos = ref([
     {
@@ -74,6 +78,16 @@
   const remainingTodos = computed(() => {
     return todos.value.filter(todo => todo.completed === false).length
   })
+
+  const showTimer = ref(true)
+
+  // onMounted(()=>{
+  //   console.log('hello')
+  //   fetch('https://jsonplaceholder.typicode.com/todos')
+  //     .then(r => r.json)
+  //     .then(v => todos.value = v.map(todo => ({...todo, date: todo.id})))
+  // })
+
 </script>
 
 <style>

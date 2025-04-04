@@ -37,6 +37,7 @@
   <br>
   <button @click=sortElement()>Trier</button>
   <br>
+  <br>
 
   <TodoList />
 
@@ -68,16 +69,23 @@
     </template>
   </ChildComponent3>
 
+  <br>
+  <input type="text" v-model="page.title">
+  <br>
+
+  <p>Temps écoulé : {{ time }}</p>  
+  <button @click="resetTime()">Reset</button>
+
 </template>
 
 <script setup>
-  import { ref }  from 'vue'
+  import { ref, watch, watchEffect}  from 'vue'
 
   import TodoList from './components/TodoList.vue';
   import ChildComponent from './components/ChildComponent.vue';
   import ChildComponent2 from './components/ChildComponent2.vue';
   import ChildComponent3 from './components/ChildComponent3.vue';
-
+  import useTimer from './composable/useTimer.ts'; 
 
   const maVar = 5;
 
@@ -145,6 +153,21 @@
     user.value.firstName = ""
     user.value.lastName  = ""
   }
+
+  const page = ref({
+    title: ''
+  })
+
+  watch(() => page.value.title , (newValue, oldValue) => {
+    document.title = newValue
+  })
+
+  watchEffect(() => {
+    document.title = page.value.title
+  })
+
+  const { time, reset: resetTime } = useTimer()
+
 </script>
 
 <style>
