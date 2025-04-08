@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="quiz">
     <h2>{{ quiz.title }}</h2>
     <Progress :value="step" :max="quiz.questions.length - 1" />
     <Question :key="question.question" :question="question" v-if="state === 'question'" @answer="addAnswers"/>
-    {{ answers }}
-    <Recap v-if="state === 'recap'" :answers="answers" :quiz="quiz"/>
+    <Recap v-else :answers="answers" :quiz="quiz"/>
   </div>
 </template>
 
@@ -39,9 +38,13 @@ const addAnswers = (answer: string) => {
     step.value++
   }
 }
-
-
 </script>
+
+<style>
+.quiz{
+  margin: 2rem
+}
+</style>
 
 
 

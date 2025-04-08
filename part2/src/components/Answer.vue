@@ -1,6 +1,6 @@
 <template>
   <label :for="id" :class="classes">
-    <input :disabled="disabled" type="radio" name="answer" :id="id" v-model="model" :value="value">
+    <input :disabled="disabled" type="radio" name="answer" :id="id" v-model="model" :value="value" @change="onChange">
     {{ value }}
   </label>
 </template>
@@ -17,6 +17,12 @@ export type AnswerPropsType = {
 };
 
 const props = defineProps<AnswerPropsType>();
+
+const emits = defineEmits(['change'])
+
+const onChange = (event: Event) => {
+  emits('change', event)
+} 
 
 const model = defineModel()
 const classes = computed(()=> ({

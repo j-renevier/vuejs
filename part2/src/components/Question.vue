@@ -3,12 +3,9 @@
     <h3>{{ question.question }}</h3>
     <ul>
       <li v-for="(choice, index) in randomChoices" :key="choice">
-        <Answer :id="`answere${index}`" :disabled="hasAnswer" :value="choice" v-model="answer" :correctAnswer="question.correct_answer"/>
+        <Answer :id="`answere${index}`" :disabled="hasAnswer" :value="choice" v-model="answer" :correctAnswer="question.correct_answer" @change="onAnswer"/>
       </li>
     </ul>
-
-
-    <p>{{ question.correct_answer }}</p>
   </div>
 </template>
 
@@ -45,6 +42,14 @@ onMounted(()=>{
 onUnmounted(()=>{
   clearTimeout(timer)
 })
+
+const onAnswer = (event: Event) => {
+  clearTimeout(timer)
+
+  timer = setTimeout(()=>{
+    emits('answer', answer.value)
+  }, 1000)
+}
 
 </script>
 

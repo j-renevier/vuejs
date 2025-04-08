@@ -1,8 +1,4 @@
 <template>
-  <header>
-    <h1>Quiz</h1>
-  </header>
-
   <main>
     <div v-if="state ==='error'">
       <p>
